@@ -11,7 +11,7 @@ L'application fonctionne entièrement côté client (**Client-Side**), sans back
 
 ---
 
-## 📑 Table des Matières
+##  Table des Matières
 
 1. [Vue d'ensemble](#-vue-densemble)
 2. [Architecture & Technique](#-architecture--technique)
@@ -24,7 +24,7 @@ L'application fonctionne entièrement côté client (**Client-Side**), sans back
 
 ---
 
-## 🔭 Vue d'ensemble
+##  Vue d'ensemble
 
 L'objectif de DartVoice est de fluidifier les matchs en supprimant la saisie manuelle.
 
@@ -34,7 +34,7 @@ L'objectif de DartVoice est de fluidifier les matchs en supprimant la saisie man
 
 ---
 
-## 🏗 Architecture & Technique
+##  Architecture & Technique
 
 Le projet repose sur une architecture monolithique optimisée pour le déploiement statique.
 
@@ -68,25 +68,25 @@ L'état est encapsulé dans l'objet global `gameState`.
 
 ---
 
-## 🚀 Fonctionnalités Détaillées
+##  Fonctionnalités Détaillées
 
-### 🎤 Contrôle Vocal
+###  Contrôle Vocal
 
 - **Feedback Temps Réel** : Affichage visuel de ce que l'IA "entend" avant validation.
 - **Synthèse Vocale (TTS)** : L'application annonce les scores, les joueurs, et suggère les finitions (Checkouts).
 
-### 📊 Statistiques & Export
+###  Statistiques & Export
 
 - **Dashboard** : Moyenne (Avg), Meilleur tour, % aux doubles, compteurs de 180/140/100.
 - **Génération PDF** : Utilisation de la librairie `jsPDF`. Le script capture le Canvas du heatmap, le convertit en image PNG base64 et l'injecte dans un rapport PDF vectoriel.
 
-### ⌨️ Clavier Virtuel
+###  Clavier Virtuel
 
 Un mode de secours tactile est disponible si l'environnement est trop bruyant pour la voix.
 
 ---
 
-## 🎮 Modes de Jeu
+##  Modes de Jeu
 
 ### 1. X01 (501, 301, 701)
 
@@ -113,7 +113,7 @@ Un mode de secours tactile est disponible si l'environnement est trop bruyant po
 
 ---
 
-## 💿 Installation et Démarrage
+##  Installation et Démarrage
 
 Cette application ne nécessite **aucun serveur backend** (Node.js/PHP non requis).
 
@@ -148,7 +148,7 @@ Puis accédez à `http://localhost:8000` dans votre navigateur.
 
 ---
 
-## 🗣 Guide des Commandes Vocales
+##  Guide des Commandes Vocales
 
 L'application est tolérante, mais voici les structures idéales pour une reconnaissance optimale :
 
@@ -166,7 +166,7 @@ L'application est tolérante, mais voici les structures idéales pour une reconn
 
 ---
 
-## 📂 Structure du Projet
+##  Structure du Projet
 
 ```plaintext
 /
@@ -192,7 +192,7 @@ L'application est tolérante, mais voici les structures idéales pour une reconn
 
 ---
 
-## ⚙️ Paramètres & Personnalisation
+##  Paramètres & Personnalisation
 
 ### Configuration du Match
 
@@ -214,7 +214,7 @@ Le fichier `style.css` contient des variables CSS personnalisables dans la secti
 
 ---
 
-## 🔒 Confidentialité & Sécurité
+##  Confidentialité & Sécurité
 
 - **Aucune donnée n'est envoyée à un serveur** : Tout le traitement est local.
 - **Pas de cookies tiers** : L'application n'utilise que le LocalStorage du navigateur.
@@ -222,13 +222,13 @@ Le fichier `style.css` contient des variables CSS personnalisables dans la secti
 
 ---
 
-## 📝 Licence
+##  Licence
 
 Ce projet est distribué sous licence MIT. Vous êtes libre de l'utiliser, le modifier et le distribuer.
 
 ---
 
-## 🤝 Contribution
+##  Contribution
 
 Les contributions sont les bienvenues ! N'hésitez pas à :
 
