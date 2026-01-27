@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DartVoice Ultimate Pro v8.1</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- MODAL SETUP -->
+    <div id="modal-setup" class="modal-overlay">
+        <div class="modal-content">
+            <h1>🎯 MATCH SETUP</h1>
+            
+            <div class="setup-grid">
+                <div class="group">
+                    <label>Mode de Jeu</label>
+                    <select id="game-mode-type">
+                        <option value="501">501 Standard</option>
+                        <option value="cricket">Cricket</option>
+                        <option value="checkout-training">Checkout Training</option>
+                        <option value="doubles-practice">Doubles Practice</option>
+                    </select>
+                </div>
+
+                <div class="group" id="score-selection">
+                    <label>Score de départ</label>
+                    <select id="game-mode">
+                        <option value="301">301</option>
+                        <option value="501" selected>501</option>
+                        <option value="701">701</option>
+                    </select>
+                </div>
+
+                <div class="group" id="match-structure">
+                    <label>Structure du Match</label>
+                    <div class="match-config-row">
+                        <div>
+                            <span>Manches (Legs)</span>
+                            <input type="number" id="input-legs" value="3" min="1">
+                            <small>Pour gagner un Set</small>
+                        </div>
+                        <div>
+                            <span>Sets</span>
+                            <input type="number" id="input-sets" value="1" min="1">
+                            <small>Pour gagner le Match</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group full-width">
+                    <label>Joueurs</label>
+                    <div id="players-list">
+                        <input type="text" value="Joueur 1">
+                        <input type="text" value="Joueur 2">
+                    </div>
+                    <button id="btn-add-player" class="btn-secondary">+ Ajouter Joueur</button>
+                </div>
+
+                <div class="group" id="double-in-group">
+                    <label>
+                        <input type="checkbox" id="check-double-in" style="width: auto; margin-right: 8px;">
+                        Double-In (démarrage)
+                    </label>
+                </div>
+
+                <div class="group" id="double-out-group">
+                    <label>
+                        <input type="checkbox" id="check-double-out" checked style="width: auto; margin-right: 8px;">
+                        Double-Out (obligatoire pour finir)
+                    </label>
+                </div>
+            </div>
+            
+
+            
+
+            <button id="btn-start-game" class="btn-primary">START MATCH 🚀</button>
+        </div>
+    </div>
+
+    <!-- INTERFACE DE JEU -->
+    <main id="game-interface" class="hidden">
+        
+        <header>
+            <div class="match-info">
+                <span class="match-title" id="game-mode-display">501 STANDARD</span>
+                <span class="sub-info" id="match-structure-display">(Best of 1 Set)</span>
+            </div>
+            <div class="system-controls">
+                <button id="btn-export-pdf" class="btn-icon">📄 PDF</button>
+                <button id="btn-settings" class="btn-icon">⚙️</button>
+                <button id="btn-quit" class="btn-icon">❌ Quitter</button>
+            </div>
+        </header>
+
+        <section class="active-zone">
+            
+            <div class="match-score-card">
+                <div class="score-box">
+                    <span class="label">SETS</span>
+                    <span id="active-sets" class="value">0</span>
+                </div>
+                <div class="score-box">
+                    <span class="label">LEGS</span>
+                    <span id="active-legs" class="value">0</span>
+                </div>
+            </div>
+
+            <div class="player-card">
+                <div class="player-label">AU TOUR DE</div>
+                <h2 id="active-player-name">...</h2>
+                <div class="big-score" id="current-score">501</div>
+                <div class="checkout-hint" id="checkout-hint"></div>
+                <div class="turn-average" id="turn-average"></div>
+
+                <!-- Affichage vocal en temps réel -->
+                <div class="voice-feedback" id="voice-feedback"></div>
+
+                <div class="dart-visuals">
+                    <div class="dart-slot" id="dart-1">-</div>
+                    <div class="dart-slot" id="dart-2">-</div>
+                    <div class="dart-slot" id="dart-3">-</div>
+                </div>
+                <div class="turn-total" id="turn-total-display"></div>
+            </div>
+
+            <div class="controls">
+                <button id="btn-mic" class="btn-mic">🎤 Activer Vocal</button>
+                
+                <button id="btn-keypad-toggle" class="btn-primary" style="margin-top: 10px; background-color: #334155;">
+                    ⌨️ Saisie Manuelle
+                </button>
+
+                <div class="sub-controls">
+                    <button id="btn-undo" class="btn-tool">↩️ Undo</button>
+                    <button id="btn-heatmap" class="btn-tool">🎯 Heatmap</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="data-zone">
+            <div class="panel">
+                <h3>Scoreboard</h3>
+                <div id="scoreboard-container"></div>
+            </div>
+
+            <div class="panel stats-panel">
+                <h3>Statistiques du joueur actif</h3>
+                <div id="player-stats" class="stats-content">
+                    <div class="stat-item">
+                        <span class="stat-label">180s</span>
+                        <span class="stat-value" id="stat-180s">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">140+</span>
+                        <span class="stat-value" id="stat-140">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">100+</span>
+                        <span class="stat-value" id="stat-100">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Meilleur Tour</span>
+                        <span class="stat-value" id="stat-best">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Moy. 1ère Fléchette</span>
+                        <span class="stat-value" id="stat-first-dart">0.0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Précision Doubles</span>
+                        <span class="stat-value" id="stat-doubles">0%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel logs-panel">
+                <h3>Historique des tirs</h3>
+                <div id="game-logs" class="logs-content">
+                    <p class="log-entry system">En attente...</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MODAL CLAVIER VIRTUEL -->
+    <div id="modal-keypad" class="modal-overlay hidden">
+        <div class="keypad-content">
+            <div class="keypad-header">
+                <span id="keypad-display">0</span>
+                <button id="btn-close-keypad" class="btn-close-icon">✖</button>
+            </div>
+            <div class="keypad-grid">
+                <button class="key-btn" data-val="1">1</button>
+                <button class="key-btn" data-val="2">2</button>
+                <button class="key-btn" data-val="3">3</button>
+                
+                <button class="key-btn" data-val="4">4</button>
+                <button class="key-btn" data-val="5">5</button>
+                <button class="key-btn" data-val="6">6</button>
+                
+                <button class="key-btn" data-val="7">7</button>
+                <button class="key-btn" data-val="8">8</button>
+                <button class="key-btn" data-val="9">9</button>
+                
+                <button class="key-btn action-del" id="btn-key-del">⌫</button>
+                <button class="key-btn" data-val="0">0</button>
+                <button class="key-btn action-ok" id="btn-key-ok">OK</button>
+            </div>
+            <div class="keypad-shortcuts">
+                <button class="key-short" data-val="26">26</button>
+                <button class="key-short" data-val="41">41</button>
+                <button class="key-short" data-val="60">60</button>
+                <button class="key-short" data-val="81">81</button>
+                <button class="key-short" data-val="100">100</button>
+                <button class="key-short" data-val="140">140</button>
+                <button class="key-short" data-val="180">180</button>
+                <button class="key-short" data-val="0">Miss</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PARAMÈTRES -->
+    <div id="modal-settings" class="modal-overlay hidden">
+        <div class="modal-content settings-modal">
+            <h1>⚙️ PARAMÈTRES</h1>
+            
+            <div class="settings-group">
+                <label>
+                    <input type="checkbox" id="setting-voice-enabled" checked>
+                    <span>Annonces vocales activées</span>
+                </label>
+                <button id="btn-test-voice" class="btn-secondary" style="margin-top: 10px;">🔊 Tester la voix</button>
+            </div>
+
+            <div class="settings-group">
+                <label>
+                    <input type="checkbox" id="setting-announce-player" checked>
+                    <span>Annoncer le nom du joueur</span>
+                </label>
+            </div>
+
+            <div class="settings-group">
+                <label>
+                    <input type="checkbox" id="setting-announce-score" checked>
+                    <span>Annoncer le score restant</span>
+                </label>
+            </div>
+
+            <div class="settings-group">
+                <label>
+                    <input type="checkbox" id="setting-announce-each-dart" checked>
+                    <span>Annoncer chaque fléchette</span>
+                </label>
+            </div>
+
+            <div class="settings-group">
+                <label>
+                    <input type="checkbox" id="setting-announce-total" checked>
+                    <span>Annoncer le total du tour</span>
+                </label>
+            </div>
+
+            <div class="settings-group">
+                <label>
+                    <input type="checkbox" id="setting-announce-checkout" checked>
+                    <span>Annoncer les suggestions de finition</span>
+                </label>
+            </div>
+
+            <div class="settings-group">
+                <label>
+                    <input type="checkbox" id="setting-encourage" checked>
+                    <span>Encouragements automatiques</span>
+                </label>
+            </div>
+
+            <div class="settings-group">
+                <label for="setting-voice-speed">Vitesse de la voix</label>
+                <input type="range" id="setting-voice-speed" min="0.7" max="1.5" step="0.1" value="1.1">
+                <span id="speed-value">1.1x</span>
+            </div>
+
+            <button id="btn-close-settings" class="btn-primary">Fermer</button>
+        </div>
+    </div>
+
+    <!-- MODAL HEATMAP FUTURISTE -->
+    <div id="modal-heatmap" class="modal-overlay hidden">
+        <div class="modal-content heatmap-modal">
+            <div class="heatmap-header">
+                <h1>🎯 HEATMAP - <span id="heatmap-player-name"></span></h1>
+                <button id="btn-close-heatmap" class="btn-close-icon">✖</button>
+            </div>
+            
+            <div class="heatmap-stats">
+                <div class="heatmap-stat">
+                    <span class="label">Total fléchettes</span>
+                    <span class="value" id="heatmap-total-darts">0</span>
+                </div>
+                <div class="heatmap-stat">
+                    <span class="label">Zone préférée</span>
+                    <span class="value" id="heatmap-favorite">-</span>
+                </div>
+                <div class="heatmap-stat">
+                    <span class="label">Précision T20</span>
+                    <span class="value" id="heatmap-accuracy">0%</span>
+                </div>
+            </div>
+
+            <div class="heatmap-container">
+                <canvas id="heatmap-canvas" width="700" height="700"></canvas>
+            </div>
+
+            <div class="heatmap-legend">
+                <span>Faible intensité</span>
+                <div class="gradient-bar"></div>
+                <span>Forte intensité</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="script.js"></script>
+    
+</body>
+</html>
